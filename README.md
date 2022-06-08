@@ -1,1 +1,1 @@
-# P6---Piquante
+# P6-Piquante
