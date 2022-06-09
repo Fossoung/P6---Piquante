@@ -4,12 +4,7 @@ const mongoose = require("mongoose");
 // valider le format des données ; gérer les relations entre les documents ; communiquer directement avec la base de données pour la lecture et l'écriture des documents.
 // remplacer l'adresse SRV par la vôtre, et la chaîne <PASSWORD> par votre mot de passe utilisateur MongoDB
 mongoose
-  .connect("mongodb+srv://" +
-  process.env.MONGO_DB_USER +
-  ":" +
-  process.env.MONGO_DB_USER_MDP +
-  "@cluster0.xxnb8.mongodb.net/" +
-  process.env.MONGO_DB_MARQUE,
+  .connect('mongodb+srv://fossoung:FO1997fssng@cluster0.jbsg7.mongodb.net/Data',
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() =>

@@ -20,7 +20,7 @@ const userCtrl = require("../controllers/user");
 // intercepte les requetes post d'inscription
 router.post("/signup", userCtrl.signup);
 // intercepte les requetes post d'authentification
-router.post("/login", limiter, userCtrl.login);
+router.post("/login", userCtrl.login);
 //----------------------------------------------------------------------------------
 // on exporte router
 module.exports = router;
