@@ -1,6 +1,5 @@
-// on importe multer
+
 const multer = require("multer");
-// on définit les images/formats reçu en appartenance de format ( comme un dictionnaire)
 const MIME_TYPES = {
   "image/jpg": "jpg",
   "image/jpeg": "jpg",
@@ -26,7 +25,6 @@ const storage = multer.diskStorage({
     const name = file.originalname.split(" ").join("_");
     // permet de créer une extension de fichiers correspondant au mimetype (via dictionnaire) envoyé par le frontend
     const extension = MIME_TYPES[file.mimetype];
-    // si le fichier correspond à un fichier image https://developer.mozilla.org/fr/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     if (
       file.mimetype === "image/jpeg" ||
       file.mimetype === "image/png" ||
@@ -44,10 +42,6 @@ const storage = multer.diskStorage({
       // si ce n'est pas un fichier image
     } else {
       console.log("fichier non accepté");
-      // déplace des fichiers non image et on garde des fichiers non conformes pour informations diverses
-      // la proposition d'un fichier image est automatique, si une personne choisit volontairement de mettre autre chose, il est fort possible que ce soit malveillant
-      // dans le fichier isolé il y a l'id de celui qui est supposé avoir posté le fichier, à voir si une faille usurpation token + id (keylogger ou autre)
-      // ou volonté du détenteur du compte
       callback(
         null,
         "isole/" + req.auth.userId + "_" + name + Date.now() + "." + extension
@@ -55,6 +49,4 @@ const storage = multer.diskStorage({
     }
   },
 });
-// on exporte le fichier via multer qui possede l'objet storage puis .single signifie fichier unique (pas un groupe de fichiers) en disant que c'est un fichier 'image'
-// ce nom de fichier sera la key dans form-data de postman (insert File)
 module.exports = multer({ storage }).single("image");

@@ -1,10 +1,8 @@
-// on appelle jsonwebtoken pour le middleware d'authentification
+
 const jwt = require("jsonwebtoken");
-// on exporte la requete
 module.exports = (req, res, next) => {
-  // essaye
+
   try {
-    // on utilise le header authorization de la requete (CORS) on split le tableau et on récupère l'élément à l'indice 1 (Bearer Token)
     const token = req.headers.authorization.split(" ")[1];
     // décoder le token en vérifiant qu'il correspond avec sa clef secrète
     const decodedToken = jwt.verify(token,"RANDOM_TOKEN_SECRET");
@@ -24,7 +22,7 @@ module.exports = (req, res, next) => {
     }
     // si il y a une erreur
   } catch (error) {
-    // reponse status 401 Unauthorized avec un message en json
+    // reponse status 401 Unauthorized 
     res.status(401).json({ error });
   }
 };

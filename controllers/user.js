@@ -1,19 +1,10 @@
-// appel de bcrypt
+
 const bcrypt = require("bcrypt");
-// appel de jsonwebtoken
 const jwt = require("jsonwebtoken");
-// appel de model user
 const User = require("../models/User_model");
-// appel du modele de mot de passe
 var passwordSchema = require("../models/Password_model");
-// appel de la fonction isEmail de validator que l'on installe npm install validator pour gérer la validation de l'email (comme une regex)
-// https://www.npmjs.com/package/validator
 const validator = require("validator");
-//----------------------------------------------------------------------------------
 // LOGIQUE SIGNUP
-//----------------------------------------------------------------------------------
-// enregistrement de nouveaux utilisateurs grace a signup
-// pour améliorer la sécurité on pourrait demander une confirmation d'inscription via boite mail et rajouter une logique
 exports.signup = (req, res, next) => {
   // vérification dans la requete de l'email via validator
   const valideEmail = validator.isEmail(req.body.email);
@@ -43,10 +34,10 @@ exports.signup = (req, res, next) => {
               .status(201)
               .json({ message: "User created (FR)Utilisateur créé !" })
           )
-          // si erreur au hashage status 400 Bad Request et message en json
+          // si erreur au hashage status 400 Bad Request 
           .catch((error) => res.status(400).json({ error }));
       })
-      // au cas d'une erreur status 500 Internal Server Error et message en json
+      // au cas d'une erreur status 500 Internal Server Error 
       .catch((error) => res.status(500).json({ error }));
     // si le mot de passe ou l'email ou les 2 ne sont pas bon
   } else {
@@ -58,21 +49,15 @@ exports.signup = (req, res, next) => {
     );
   }
 };
-//----------------------------------------------------------------------------------
+
 // LOGIQUE LOGIN
-//----------------------------------------------------------------------------------
-// l'identification d'utilisateur grace a login
-// on pourrait demander un autre type de vérification pour le login et y rajouter sa logique (captcha ou code reçu par téléphone avec un input à compléter)
 exports.login = (req, res, next) => {
- 
-  // on trouve l'adresse qui est rentrée par un utilisateur (requete)
   User.findOne({ email: req.body.email })
     // pour un utilisateur
     .then((user) => {
-      
       // si la requete email ne correspond pas à un utisateur
       if (!user) {
-        // status 401 Unauthorized et message en json
+        // status 401 Unauthorized 
         return res.status(401).json({ error });
       }
       
@@ -84,11 +69,11 @@ exports.login = (req, res, next) => {
          
           // si ce n'est pas valide
           if (!valid) {
-            // retourne un status 401 Unauthorized et un message en json
+            // retourne un status 401 Unauthorized 
             return res.status(401).json({ error });
           }
           
-          // si c'est ok status 201 Created et renvoi un objet json
+          // si c'est ok status 201 Created 
           res.status(201).json({
             // renvoi l'user id
             userId: user._id,
@@ -103,9 +88,9 @@ exports.login = (req, res, next) => {
             ),
           });
         })
-        // erreur status 500 Internal Server Error et message en json
+        // erreur status 500 Internal Server Error 
         .catch((error) => res.status(500).json({ error }));
     })
-    // erreur status 500 Internal Server Error et message en json
+    // erreur status 500 Internal Server Error 
     .catch((error) => res.status(500).json({ error }));
 };

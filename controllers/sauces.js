@@ -1,34 +1,29 @@
-// on appelle le modèle de la sauce
+
 const Sauce = require("../models/Sauce_model");
-// on appelle fs (filesystem) qui permet d'aller dans les fichiers
 const fs = require("fs");
 const { error } = require("console");
-//----------------------------------------------------------------------------------
+
 // LOGIQUE GETALLSAUCE
-//----------------------------------------------------------------------------------
 // accède à toutes les sauces
-// une personne avec un webtokenvalide accède à ces informations puisque seulement le token identifie et donne accés
 exports.getAllSauce = (req, res, next) => {
   // on veut la liste complète de Sauce alors on utilise find() sans argument
   Sauce.find()
-    //  status 200 OK et sauces en json
+    //  status 200 OK 
     .then((sauces) => {
       res.status(200).json(sauces);
     })
-    // erreur un status 400 Bad Request et l'erreur en json
+    // erreur un status 400 Bad Request 
     .catch((error) => res.status(400).json({ error }));
 };
-//----------------------------------------------------------------------------------
+
 // LOGIQUE GETONESAUCE
-//----------------------------------------------------------------------------------
-// accède à une sauce
 // une personne avec un webtokenvalide accède à ces informations puisque seulement le token identifie et donne accés
 exports.getOneSauce = (req, res, next) => {
   // on utilise le modele mangoose et findOne pour trouver un objet via la comparaison req.params.id
   Sauce.findOne({ _id: req.params.id })
-    // status 200 OK et l'élément en json
+    // status 200 OK 
     .then((sauce) => res.status(200).json(sauce))
-    // si erreur envoit un status 404 Not Found et l'erreur en json
+    // si erreur envoit un status 404 
     .catch((error) => res.status(404).json({ error }));
 };
 //----------------------------------------------------------------------------------
@@ -46,13 +41,11 @@ exports.createSauce = (req, res, next) => {
     usersLiked: [],
     usersDisliked: [],
   };
-  // l'user id de la requete doit etre le meme que l'id associé au token (si sur postman une personne rentre dans la data un autre id que celui du token)
-  // si la sécurité du token et de l'user id est compromit, revoir authentification via captcha ou autre système plus accessible car risque de keylogger
-  // il faut adapter la sécurité au type de donnée potentiellement recueillie malhonnetement par un tier ou donnée délivrée nuisible par usurpation via ce tier
+  
   if (sauceObject.userId !== req.auth.userId) {
-    // reponse en status 403 Forbidden avec message json
+    // reponse en status 403 Forbidden 
     return res.status(403).json("unauthorized request");
-    // détermine si le fichier envoyé est bien une image https://developer.mozilla.org/fr/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+    // détermine si le fichier envoyé est bien une image 
   } else if (
     req.file.mimetype === "image/jpeg" ||
     req.file.mimetype === "image/png" ||
@@ -83,7 +76,6 @@ exports.createSauce = (req, res, next) => {
     // enregistre l'objet dans la base de donnée
     sauce
       .save()
-      // retourne une promesse, il faut une réponse sinon il y a expiration de la requete donc un status 201 Created pour bonne création de ressource + message
       .then(() =>
         res
           .status(201)
@@ -93,18 +85,14 @@ exports.createSauce = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
     // si ce qui est envoyé n'est pas un fichier image
   } else {
-    // déclaration de sauce qui sera une nouvelle instance du modele Sauce qui contient toutes les informations dont on a besoin
     const sauce = new Sauce({
       // raccourci spread pour récupérer toutes les données de req.body ( title description...)
       ...sauceObject,
-      // on met une image par defaut
-      // l'image url correspont au protocole avec :// puis la valeur du port (host) dans le dossier images qui a le nom
       imageUrl: `${req.protocol}://${req.get(
         "host"
       )}/images/defaut/imagedefaut.png`,
       ...initialisation,
     });
-    // si problème avec valeur heat (postman) initialisation de sa valeur
     if (sauce.heat < 0 || sauce.heat > 10) {
       sauce.heat = 0;
       console.log("valeur heat invalide, heat initialisé");
@@ -150,7 +138,7 @@ exports.modifySauce = (req, res, next) => {
         return res.status(403).json("unauthorized request");
         // si il y a un fichier avec la demande de modification
       } else if (req.file) {
-        // on vérifie que c'est bien une image https://developer.mozilla.org/fr/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
+        // on vérifie que c'est bien une image 
         if (
           req.file.mimetype === "image/jpeg" ||
           req.file.mimetype === "image/png" ||
@@ -292,11 +280,10 @@ exports.deleteSauce = (req, res, next) => {
               .status(200)
               .json({ message: "sauce removed (FR)sauce supprimée !" })
           )
-          // si erreur status 400 Bad Request et erreur en json
+          
           .catch((error) => res.status(400).json({ error }));
       }
     })
-    // erreur 404 Not Found avec erreur en json
     .catch((error) => res.status(404).json({ error }));
 };
 //----------------------------------------------------------------------------------
@@ -324,8 +311,6 @@ exports.likeSauce = (req, res, next) => {
       } else {
         valeurVote = 0;
       }
-      // ce comparateur va determiner le vote de l'utilisateur par rapport à une action de vote
-      // si l'user n'a pas voté avant et vote positivement
       if (valeurVote === 0 && req.body.like === 1) {
         // ajoute 1 vote positif à likes
         sauce.likes += 1;
@@ -357,7 +342,6 @@ exports.likeSauce = (req, res, next) => {
       } else {
         console.log("tentavive de vote illégal");
       }
-      // met à jour la sauce
       Sauce.updateOne(
         { _id: req.params.id },
         {
@@ -367,9 +351,8 @@ exports.likeSauce = (req, res, next) => {
           usersDisliked: sauce.usersDisliked,
         }
       )
-        // retourne une promesse avec status 201 Created et message en json
+        
         .then(() => res.status(201).json({ message: "Vous venez de voter" }))
-        // en cas d'erreur un status 400 et l'erreur en json
         .catch((error) => {
           if (error) {
             console.log(error);
