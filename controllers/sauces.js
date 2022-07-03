@@ -3,8 +3,7 @@ const Sauce = require("../models/Sauce_model");
 const fs = require("fs");
 const { error } = require("console");
 
-// LOGIQUE GET ALL SAUCE
-// accède à toutes les sauces
+// LOGIQUE GET ALL SAUCE // accède à toutes les sauces
 exports.getAllSauce = (req, res, next) => {
   // on veut la liste complète de Sauce alors on utilise find() sans argument
   Sauce.find()
@@ -26,15 +25,12 @@ exports.getOneSauce = (req, res, next) => {
     // si erreur envoit un status 404 
     .catch((error) => res.status(404).json({ error }));
 };
-//----------------------------------------------------------------------------------
+
 // LOGIQUE CREATE SAUCE
-//----------------------------------------------------------------------------------
-// créait une sauce
 exports.createSauce = (req, res, next) => {
   // on extrait le sauce de la requete via le parse
-  // dans req.body.sauce le sauce correspont à la key de postman pour ajouter les infos en texte
   const sauceObject = JSON.parse(req.body.sauce);
-  // constant qui servira à initialiser certains paramètres à la création
+  // constant qui servira à initialiser à la création de certains paramètres
   const initialisation = {
     likes: 0,
     dislikes: 0,
@@ -110,9 +106,8 @@ exports.createSauce = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 };
-//----------------------------------------------------------------------------------
+
 // LOGIQUE MODIFY SAUCE
-//----------------------------------------------------------------------------------
 // modifie une sauce
 exports.modifySauce = (req, res, next) => {
   // l'id de la sauce est l'id inscrit dans l'url
@@ -236,9 +231,7 @@ exports.modifySauce = (req, res, next) => {
       res.status(404).json({ error });
     });
 };
-//----------------------------------------------------------------------------------
 // LOGIQUE DELETE SAUCE
-//----------------------------------------------------------------------------------
 // efface une sauce
 exports.deleteSauce = (req, res, next) => {
   // trouve dans les sauce un _id correspondant à l'id de la requete
@@ -286,9 +279,8 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch((error) => res.status(404).json({ error }));
 };
-//----------------------------------------------------------------------------------
+
 // LOGIQUE LIKE SAUCE
-//----------------------------------------------------------------------------------
 // like une sauce
 exports.likeSauce = (req, res, next) => {
   // on utilise le modele mangoose et findOne pour trouver un objet via la comparaison req.params.id
@@ -359,6 +351,6 @@ exports.likeSauce = (req, res, next) => {
           }
         });
     })
-    // si erreur envoit un status 404 Not Found et l'erreur en json
+    // si erreur envoit un status 404 Not Found 
     .catch((error) => res.status(404).json({ error }));
 };

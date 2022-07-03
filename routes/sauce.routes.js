@@ -10,7 +10,7 @@ router.get("/", auth, saucesCtrl.getAllSauce);
 router.get("/:id", auth, saucesCtrl.getOneSauce);
 // intercepte requete post de creation de sauce
 router.post("/", auth, multer, saucesCtrl.createSauce);
-// intercepte les requetes put (modification/mise à jour)
+// intercepte les requetes put 
 router.put("/:id", auth, multer, saucesCtrl.modifySauce);
 // intercepte les requetes delete
 router.delete("/:id", auth, saucesCtrl.deleteSauce);
