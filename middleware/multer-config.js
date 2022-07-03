@@ -12,18 +12,15 @@ const MIME_TYPES = {
   "image/tif": "tif",
   "image/webp": "webp",
 };
-// multer.diskStorage on va enregistrer sur le disque
 const storage = multer.diskStorage({
   // on choisit la destination
   destination: (req, file, callback) => {
     // null dit qu'il n'y a pas eu d'erreur à ce niveau la et 'images' c'est le nom du dossier
     callback(null, "images");
   },
-  // on definit les termes de son appel (nom)
+  // on definit les termes de son appel 
   filename: (req, file, callback) => {
-    // nom d'origine du fichier que l'ont transforme si il y a des espaces, on crée un tableau et on join ses éléments par _
     const name = file.originalname.split(" ").join("_");
-    // permet de créer une extension de fichiers correspondant au mimetype (via dictionnaire) envoyé par le frontend
     const extension = MIME_TYPES[file.mimetype];
     if (
       file.mimetype === "image/jpeg" ||
