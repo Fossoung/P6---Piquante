@@ -3,7 +3,7 @@ const Sauce = require("../models/Sauce_model");
 const fs = require("fs");
 const { error } = require("console");
 
-// LOGIQUE GETALLSAUCE
+// LOGIQUE GET ALL SAUCE
 // accède à toutes les sauces
 exports.getAllSauce = (req, res, next) => {
   // on veut la liste complète de Sauce alors on utilise find() sans argument
@@ -16,7 +16,7 @@ exports.getAllSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-// LOGIQUE GETONESAUCE
+// LOGIQUE GET ONE SAUCE
 // une personne avec un webtokenvalide accède à ces informations puisque seulement le token identifie et donne accés
 exports.getOneSauce = (req, res, next) => {
   // on utilise le modele mangoose et findOne pour trouver un objet via la comparaison req.params.id
@@ -27,7 +27,7 @@ exports.getOneSauce = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 //----------------------------------------------------------------------------------
-// LOGIQUE CREATESAUCE
+// LOGIQUE CREATE SAUCE
 //----------------------------------------------------------------------------------
 // créait une sauce
 exports.createSauce = (req, res, next) => {
@@ -111,7 +111,7 @@ exports.createSauce = (req, res, next) => {
   }
 };
 //----------------------------------------------------------------------------------
-// LOGIQUE MODIFYSAUCE
+// LOGIQUE MODIFY SAUCE
 //----------------------------------------------------------------------------------
 // modifie une sauce
 exports.modifySauce = (req, res, next) => {
@@ -237,7 +237,7 @@ exports.modifySauce = (req, res, next) => {
     });
 };
 //----------------------------------------------------------------------------------
-// LOGIQUE DELETESAUCE
+// LOGIQUE DELETE SAUCE
 //----------------------------------------------------------------------------------
 // efface une sauce
 exports.deleteSauce = (req, res, next) => {
@@ -287,7 +287,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 //----------------------------------------------------------------------------------
-// LOGIQUE LIKESAUCE
+// LOGIQUE LIKE SAUCE
 //----------------------------------------------------------------------------------
 // like une sauce
 exports.likeSauce = (req, res, next) => {
