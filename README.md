@@ -1,4 +1,4 @@
-# Piquante 🥫
+# Piquante 
 
 
 P6, L'objectif est de construire une API sécurisée.
